@@ -7,7 +7,7 @@ output:
 geometry: margin=2.54cm
 title: "Insert title of project here"
 subtitle: "Web address for GitHub repository"
-author: "Name"
+author: "Camila Zarate Ospina, Savannah Artusi, and Autumn Dunn"
 fontsize: 12pt
 mainfont: Times New Roman
 
