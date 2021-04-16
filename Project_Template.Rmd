@@ -25,8 +25,13 @@ mainfont: Times New Roman
 # Set your working directory
 
 # Load your packages
+pacman::p_load(tidyverse, lubridate, ggpubr, dplyr, zoo, dataRetrieval)
 
 # Set your ggplot theme
+mytheme <- theme_grey() +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "right")
+theme_set(mytheme)
 
 # Load your datasets
 
