@@ -5,7 +5,7 @@ output:
     fig_caption: yes
     number_sections: yes
 geometry: margin=2.54cm
-title: "  "
+title: ""
 subtitle: "Web address for GitHub repository"
 author: "Camila Zarate Ospina, Savannah Artusi, and Autumn Dunn"
 fontsize: 12pt
@@ -39,7 +39,7 @@ Input Raw Data
 ```{r}
 # Load your datasets
 #Identify gauge to download
-siteNo <- ' ' 
+siteNo <- '02138520' 
 
 #Identify parameter of interest: 
 pcode = '00065' #gage height
@@ -85,7 +85,6 @@ Water_2018 <- Water %>%
                   select(Date, GH) %>% 
                   rename(GageHeight = "GH")
                    
-
 ```
 
 
