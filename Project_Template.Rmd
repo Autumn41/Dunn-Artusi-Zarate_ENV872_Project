@@ -5,7 +5,7 @@ output:
     fig_caption: yes
     number_sections: yes
 geometry: margin=2.54cm
-title: "Insert title of project here"
+title: "  "
 subtitle: "Web address for GitHub repository"
 author: "Camila Zarate Ospina, Savannah Artusi, and Autumn Dunn"
 fontsize: 12pt
@@ -34,6 +34,7 @@ mytheme <- theme_grey() +
 theme_set(mytheme)
 ```
 
+Input Data
 ```{r}
 # Load your datasets
 #Identify gauge to download
@@ -61,9 +62,6 @@ fallslake <- renameNWISColumns(fallslake);
 colnames(fallslake)
 ```
 
-
-
-
 # Rationale and Research Questions
 
 
@@ -86,9 +84,9 @@ colnames(fallslake)
 
 
 
-## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
+## Question 1: how much does a stream gage height increase after a hurricane? 
 
-## Question 2: 
+## Question 2: how long until stream gage height returns to normal after a hurricane?
 
 
 
