@@ -38,8 +38,14 @@ theme_set(mytheme)
 Input Raw Data
 ```{r}
 # Load your datasets
-#Identify gauge to download
-siteNo <- '02081094' 
+#Identify gauge
+# Falls lake (Durham) - 02087182
+# Roanoake River (Jamesville) - 02081094
+# Roanoake River (Halifax) - 0208062765
+# Hyco Creek (Leasburg) - 02077200
+
+#select site
+siteNo <-"02087182"
 
 #Identify parameter of interest: 
 pcode = '00065' #gage height (feet)
@@ -88,7 +94,6 @@ Water_2018 <- Water %>%
 Combo_wide <-    bind_cols(Water_2001, Water_2018)   
 Combo_long <- full_join(Water_2001, Water_2018, by = c("Date", "GageHeight"))
 
-test<-WaterDate("02081094")
 ```
 
 
