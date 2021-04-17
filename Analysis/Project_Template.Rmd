@@ -39,10 +39,10 @@ Input Raw Data
 ```{r}
 # Load your datasets
 #Identify gauge to download
-siteNo <- ' ' 
+siteNo <- '02081094' 
 
 #Identify parameter of interest: 
-pcode = '00065' #gage height
+pcode = '00065' #gage height (feet)
 
 #Identify statistic code for daily values: 
 scode = "00003"  #mean
@@ -84,7 +84,9 @@ Water_2018 <- Water %>%
                   filter(Year %in% ("2018")) %>% 
                   select(Date, GH) %>% 
                   rename(GageHeight = "GH")
-                   
+          
+Combo_wide <-    bind_cols(Water_2001, Water_2018)   
+Combo_long <- full_join(Water_2001, Water_2018, by = c("Date", "GageHeight"))
 
 ```
 
