@@ -44,6 +44,12 @@ Input Raw Data
 # Roanoake River (Halifax) - 0208062765
 # Hyco Creek (Leasburg) - 02077200
 
+#Gauges in the path
+# Catawba River  (Pleasant Gardens) - 02137727
+# Yadkin River (Patterson) - 02111000
+# Mills River (Mills River) - 03446000
+# French Broad River (Fletcher) - 03447687
+
 #select site
 siteNo <-"02087182"
 
