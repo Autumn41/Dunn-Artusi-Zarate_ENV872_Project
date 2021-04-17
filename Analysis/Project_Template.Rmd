@@ -25,6 +25,7 @@ mainfont: Times New Roman
 # Set your working directory
 
 # Load your packages
+if(!require(pacman)) install.packages("pacman")
 pacman::p_load(tidyverse, lubridate, ggpubr, dplyr, zoo, dataRetrieval)
 
 # Set your ggplot theme
@@ -34,14 +35,14 @@ mytheme <- theme_grey() +
 theme_set(mytheme)
 ```
 
-Input Data
+Input Raw Data
 ```{r}
 # Load your datasets
 #Identify gauge to download
-siteNo <- '02087182' 
+siteNo <- ' ' 
 
 #Identify parameter of interest: 
-pcode = '00065' #discharge (cfs)
+pcode = '00065' #gage height
 
 #Identify statistic code for daily values: 
 scode = "00003"  #mean
@@ -51,16 +52,42 @@ start.date = "2001-01-01"
 end.date = "2018-12-01"
 
 #Load in data using the package's "readNWISdv" function
-fallslake <- readNWISdv(siteNumbers = siteNo, 
+Water <- readNWISdv(siteNumbers = siteNo, 
                     parameterCd = pcode, 
                     statCd = scode, 
                     startDate=start.date, 
                     endDate=end.date)
 
 #Rename columns to something more useful
-fallslake <- renameNWISColumns(fallslake); 
-colnames(fallslake)
+Water <- renameNWISColumns(Water); 
+colnames(Water)
+saveRDS(Water, file ="../Data/Raw/Water.rds")
 ```
+
+Process Data
+```{r}
+Water$Date<-as.Date(Water$Date, format = "%Y/%m/%d")
+Water_2001 <- Water %>% 
+                  select(Date, GH) %>% 
+                  mutate(Month = month(Date),
+                         Year = year(Date)) %>% 
+                  filter(Month %in% ("9")) %>% 
+                  filter(Year %in% ("2001")) %>% 
+                  select(Date, GH) %>% 
+                  rename(GageHeight = "GH")
+
+Water_2018 <- Water %>% 
+                  select(Date, GH) %>% 
+                  mutate(Month = month(Date),
+                         Year = year(Date)) %>% 
+                  filter(Month %in% ("9")) %>% 
+                  filter(Year %in% ("2018")) %>% 
+                  select(Date, GH) %>% 
+                  rename(GageHeight = "GH")
+                   
+
+```
+
 
 # Rationale and Research Questions
 
