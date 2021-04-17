@@ -88,6 +88,7 @@ Water_2018 <- Water %>%
 Combo_wide <-    bind_cols(Water_2001, Water_2018)   
 Combo_long <- full_join(Water_2001, Water_2018, by = c("Date", "GageHeight"))
 
+test<-WaterDate("02081094")
 ```
 
 
