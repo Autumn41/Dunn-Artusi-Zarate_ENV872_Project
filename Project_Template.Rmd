@@ -32,10 +32,36 @@ mytheme <- theme_grey() +
   theme(axis.text = element_text(color = "black"), 
         legend.position = "right")
 theme_set(mytheme)
-
-# Load your datasets
-
 ```
+
+```{r}
+# Load your datasets
+#Identify gauge to download
+siteNo <- '02087182' 
+
+#Identify parameter of interest: 
+pcode = '00065' #discharge (cfs)
+
+#Identify statistic code for daily values: 
+scode = "00003"  #mean
+
+#Identify start and end dates
+start.date = "2001-01-01"
+end.date = "2018-12-01"
+
+#Load in data using the package's "readNWISdv" function
+fallslake <- readNWISdv(siteNumbers = siteNo, 
+                    parameterCd = pcode, 
+                    statCd = scode, 
+                    startDate=start.date, 
+                    endDate=end.date)
+
+#Rename columns to something more useful
+fallslake <- renameNWISColumns(fallslake); 
+colnames(fallslake)
+```
+
+
 
 
 # Rationale and Research Questions
