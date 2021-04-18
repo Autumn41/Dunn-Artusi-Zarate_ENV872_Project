@@ -56,8 +56,8 @@ pcode = '00065' #gage height (feet)
 scode = "00003"  #mean
 
 # Identify start and end dates
-start.date = "2001-01-01"
-end.date = "2018-12-01"
+start.date = "2000-01-01"
+end.date = "2020-12-01"
 
 # Load in data using the package's "readNWISdv" function
 Catawba <- readNWISdv(siteNumbers = siteNo1, 
@@ -121,7 +121,7 @@ Yadkin_sept <- Yadkin %>%
                   mutate(Month = month(Date),
                          Year = year(Date)) %>% 
                   filter(Month %in% ("9")) %>% 
-                  select(Date, GH)
+                  select(Date, GH, Year)
 saveRDS(Yadkin_sept, file ="../Data/Processed/Yadkin_sept.rds")
 
 #Mills
@@ -315,11 +315,10 @@ plot(FrenchBroad_GLM)
 
 
 
-## Question 1: Has gage height changed over 2001-2018 for September from hurricanes? 
+## Question 1: Has gage height changed over 2000-2020 for September from hurricanes? 
+
 
 ## Question 2: How much does a stream gage height change after a hurricane? 
-
-
 
 
 \newpage
