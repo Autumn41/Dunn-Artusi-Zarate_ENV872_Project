@@ -6,7 +6,7 @@ output:
     number_sections: yes
 geometry: margin=2.54cm
 title: "  "
-subtitle: "Web address for GitHub repository"
+subtitle: "https://github.com/Autumn41/Dunn-Artusi-Zarate_ENV872_Project.git"
 author: "Camila Zarate Ospina, Savannah Artusi, and Autumn Dunn"
 fontsize: 12pt
 mainfont: Times New Roman
@@ -21,14 +21,13 @@ mainfont: Times New Roman
 \listoffigures 
 \newpage
 
+Set-Up Work Space
 ```{r setup, include=FALSE}
-# Set your working directory
-
-# Load your packages
+# Load packages
 if(!require(pacman)) install.packages("pacman")
 pacman::p_load(tidyverse, lubridate, ggpubr, dplyr, zoo, dataRetrieval)
 
-# Set your ggplot theme
+# Set ggplot theme
 mytheme <- theme_grey() +
   theme(axis.text = element_text(color = "black"), 
         legend.position = "right")
@@ -36,72 +35,115 @@ theme_set(mytheme)
 ```
 
 Input Raw Data
-```{r}
+```{r DataRaw}
 # Load your datasets
-#Identify gauge
-# Falls lake (Durham) - 02087182
-# Roanoake River (Jamesville) - 02081094
-# Roanoake River (Halifax) - 0208062765
-# Hyco Creek (Leasburg) - 02077200
-
-#Gauges in the path
+# Identify gauge
 # Catawba River  (Pleasant Gardens) - 02137727
 # Yadkin River (Patterson) - 02111000
 # Mills River (Mills River) - 03446000
 # French Broad River (Fletcher) - 03447687
 
-#select site
-siteNo <-"02087182"
+# Select Site
+siteNo1 <-"02137727"
+siteNo2 <-"02111000"
+siteNo3 <-"03446000"
+siteNo4 <-"03447687"
 
-#Identify parameter of interest: 
+# Identify parameter of interest: 
 pcode = '00065' #gage height (feet)
 
-#Identify statistic code for daily values: 
+# Identify statistic code for daily values: 
 scode = "00003"  #mean
 
-#Identify start and end dates
+# Identify start and end dates
 start.date = "2001-01-01"
 end.date = "2018-12-01"
 
-#Load in data using the package's "readNWISdv" function
-Water <- readNWISdv(siteNumbers = siteNo, 
+# Load in data using the package's "readNWISdv" function
+Catawba <- readNWISdv(siteNumbers = siteNo1, 
                     parameterCd = pcode, 
                     statCd = scode, 
                     startDate=start.date, 
                     endDate=end.date)
 
-#Rename columns to something more useful
-Water <- renameNWISColumns(Water); 
-colnames(Water)
-saveRDS(Water, file ="../Data/Raw/Water.rds")
+Yadkin <- readNWISdv(siteNumbers = siteNo2, 
+                    parameterCd = pcode, 
+                    statCd = scode, 
+                    startDate=start.date, 
+                    endDate=end.date)
+
+Mills <- readNWISdv(siteNumbers = siteNo3, 
+                    parameterCd = pcode, 
+                    statCd = scode, 
+                    startDate=start.date, 
+                    endDate=end.date)
+
+FrenchBroad <- readNWISdv(siteNumbers = siteNo4, 
+                    parameterCd = pcode, 
+                    statCd = scode, 
+                    startDate=start.date, 
+                    endDate=end.date)
+
+# Rename columns
+Catawba <- renameNWISColumns(Catawba); 
+colnames(Catawba)
+saveRDS(Catawba, file ="../Data/Raw/Catawba.rds")
+
+Yadkin <- renameNWISColumns(Yadkin); 
+colnames(Yadkin)
+saveRDS(Yadkin, file ="../Data/Raw/Yadkin.rds")
+
+Mills <- renameNWISColumns(Mills); 
+colnames(Mills)
+saveRDS(Mills, file ="../Data/Raw/Mills.rds")
+
+FrenchBroad <- renameNWISColumns(FrenchBroad); 
+colnames(FrenchBroad)
+saveRDS(FrenchBroad, file ="../Data/Raw/FrenchBroad.rds")
 ```
 
 Process Data
-```{r}
-Water$Date<-as.Date(Water$Date, format = "%Y/%m/%d")
-Water_2001 <- Water %>% 
+```{r DataProcessing}
+#Catawba
+Catawba$Date<-as.Date(Catawba$Date, format = "%Y/%m/%d")
+Catawba_sept <- Catawba %>% 
                   select(Date, GH) %>% 
                   mutate(Month = month(Date),
                          Year = year(Date)) %>% 
                   filter(Month %in% ("9")) %>% 
-                  filter(Year %in% ("2001")) %>% 
-                  select(Date, GH) %>% 
-                  rename(GageHeight = "GH")
+                  select(Date, GH, Year)
+saveRDS(Catawba_sept, file ="../Data/Processed/Catawba_sept.rds")
 
-Water_2018 <- Water %>% 
+#Yadkin
+Yadkin$Date<-as.Date(Yadkin$Date, format = "%Y/%m/%d")
+Yadkin_sept <- Yadkin %>% 
                   select(Date, GH) %>% 
                   mutate(Month = month(Date),
                          Year = year(Date)) %>% 
                   filter(Month %in% ("9")) %>% 
-                  filter(Year %in% ("2018")) %>% 
-                  select(Date, GH) %>% 
-                  rename(GageHeight = "GH")
-          
-Combo_wide <-    bind_cols(Water_2001, Water_2018)   
-Combo_long <- full_join(Water_2001, Water_2018, by = c("Date", "GageHeight"))
+                  select(Date, GH)
+saveRDS(Yadkin_sept, file ="../Data/Processed/Yadkin_sept.rds")
 
+#Mills
+Mills$Date<-as.Date(Mills$Date, format = "%Y/%m/%d")
+Mills_sept <- Mills %>% 
+                  select(Date, GH) %>% 
+                  mutate(Month = month(Date),
+                         Year = year(Date)) %>% 
+                  filter(Month %in% ("9")) %>% 
+                  select(Date, GH, Year)
+saveRDS(Mills_sept, file ="../Data/Processed/Mills_sept.rds")
+
+#FrenchBroad
+FrenchBroad$Date<-as.Date(FrenchBroad$Date, format = "%Y/%m/%d")
+FrenchBroad_sept <- FrenchBroad %>% 
+                  select(Date, GH) %>% 
+                  mutate(Month = month(Date),
+                         Year = year(Date)) %>% 
+                  filter(Month %in% ("9")) %>% 
+                  select(Date, GH, Year)
+saveRDS(FrenchBroad_sept, file ="../Data/Processed/FrenchBroad_sept.rds")
 ```
-
 
 # Rationale and Research Questions
 
@@ -116,6 +158,39 @@ Combo_long <- full_join(Water_2001, Water_2018, by = c("Date", "GageHeight"))
 \newpage
 
 # Exploratory Analysis 
+```{r Plots}
+#Plot 1 - Catawba Gage Height as points on individual plots for September
+ggplot(Catawba_sept, aes(y=GH, x=Date)) +
+  geom_point() +
+  xlab("Date") +
+  ylab("Gage Height (feet)") +
+  mytheme +
+  facet_wrap(vars(Year)) 
+
+#Plot 2 - Yadkin Gage Height as points on individual plots for September
+ggplot(Yadkin_sept, aes(y=GH, x=Date)) +
+  geom_point() +
+  xlab("Date") +
+  ylab("Gage Height (feet)") +
+  mytheme +
+  facet_wrap(vars(Year)) 
+
+#Plot 3 - Mills Gage Height as points on individual plots for September
+ggplot(Mills_sept, aes(y=GH, x=Date)) +
+  geom_point() +
+  xlab("Date") +
+  ylab("Gage Height (feet)") +
+  mytheme +
+  facet_wrap(vars(Year)) 
+
+#Plot 4 - FrenchBroad Gage Height as points on individual plots for September
+ggplot(FrenchBroad_sept, aes(y=GH, x=Date)) +
+  geom_point() +
+  xlab("Date") +
+  ylab("Gage Height (feet)") +
+  mytheme +
+  facet_wrap(vars(Year)) 
+```
 
 
 
@@ -123,11 +198,126 @@ Combo_long <- full_join(Water_2001, Water_2018, by = c("Date", "GageHeight"))
 
 # Analysis
 
+Time Series 
+```{r TimeSeries}
+
+## Catawba ##
+
+# Generate time series
+Start_month <- month(first(Catawba_sept))
+Start_year <- year(first(Catawba_sept))
+
+Catawba.daily.ts <- ts(Catawba$GH,
+                   start=c(Start_year,Start_month),
+                   frequency=30) 
+
+# Decompose
+Day_Catawba_decomp <- stl(Catawba.daily.ts, s.window = "periodic")
+plot(Day_Catawba_decomp)
+
+# Run SMK test
+Month_Catawba_trend <- Kendall::SeasonalMannKendall(Catawba.daily.ts)
+
+# Inspect results
+summary(Month_Catawba_trend)
 
 
-## Question 1: how much does a stream gage height increase after a hurricane? 
+## Yadkin ##
 
-## Question 2: how long until stream gage height returns to normal after a hurricane?
+# Generate time series
+Start_month2 <- month(first(Yadkin_sept))
+Start_year2 <- year(first(Yadkin_sept))
+
+Yadkin.daily.ts <- ts(Yadkin$GH,
+                   start=c(Start_year2,Start_month2),
+                   frequency=30) 
+
+# Decompose
+Day_Yadkin_decomp <- stl(Yadkin.daily.ts, s.window = "periodic")
+plot(Day_Yadkin_decomp)
+
+# Run SMK test
+Month_Yadkin_trend <- Kendall::SeasonalMannKendall(Yadkin.daily.ts)
+
+# Inspect results
+summary(Month_Yadkin_trend)
+
+
+## Mills ##
+
+# Generate time series
+Start_month3 <- month(first(Mills_sept))
+Start_year3 <- year(first(Mills_sept))
+
+Mills.daily.ts <- ts(Yadkin$GH,
+                   start=c(Start_year3,Start_month3),
+                   frequency=30) 
+
+# Decompose
+Day_Mills_decomp <- stl(Mills.daily.ts, s.window = "periodic")
+plot(Day_Mills_decomp)
+
+# Run SMK test
+Month_Mills_trend <- Kendall::SeasonalMannKendall(Mills.daily.ts)
+
+# Inspect results
+summary(Month_Mills_trend)
+
+
+## FrenchBroad ##
+
+# Generate time series
+Start_month4 <- month(first(FrenchBroad_sept))
+Start_year4<- year(first(FrenchBroad_sept))
+
+FrenchBroad.daily.ts <- ts(FrenchBroad$GH,
+                   start=c(Start_year4,Start_month4),
+                   frequency=30) 
+
+# Decompose
+Day_FrenchBroad_decomp <- stl(FrenchBroad.daily.ts, s.window = "periodic")
+plot(Day_FrenchBroad_decomp)
+
+# Run SMK test
+Month_FrenchBroad_trend <- Kendall::SeasonalMannKendall(FrenchBroad.daily.ts)
+
+# Inspect results
+summary(Month_FrenchBroad_trend)
+
+```
+
+GLM model comparing 2001 to 2018
+```{r GLM}
+#H0: Gage Height is the same in September every year
+#Ha: Gage Height is not the same in September every year
+
+# Catawba - GLM
+Catawba_GLM <- lm(Catawba_sept$GH ~ Catawba_sept$Year)
+summary(Catawba_GLM)
+plot(Catawba_GLM)
+
+# Yadkin - GLM
+Yadkin_GLM <- lm(Yadkin_sept$GH ~ Yadkin_sept$Year)
+summary(Yadkin_GLM)
+plot(Yadkin_GLM)
+
+# Mills - GLM
+Mills_GLM <- lm(Mills_sept$GH ~ Mills_sept$Year)
+summary(Mills_GLM)
+plot(Mills_GLM)
+
+# FrenchBroad - GLM
+FrenchBroad_GLM <- lm(FrenchBroad_sept$GH ~ FrenchBroad_sept$Year)
+summary(FrenchBroad_GLM)
+plot(FrenchBroad_GLM)
+
+```
+
+
+
+## Question 1: Has gage height changed over 2001-2018 for September from hurricanes? 
+
+## Question 2: How much does a stream gage height change after a hurricane? 
 
 
 
