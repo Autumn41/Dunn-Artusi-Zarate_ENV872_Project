@@ -5,8 +5,13 @@ output:
     fig_caption: yes
     number_sections: yes
 geometry: margin=2.54cm
+<<<<<<< HEAD
+title: ""
+subtitle: "Web address for GitHub repository"
+=======
 title: "Assessing water level changes from hurricanes from 2000 - 2020"
 subtitle: "https://github.com/Autumn41/Dunn-Artusi-Zarate_ENV872_Project.git"
+>>>>>>> 500aa9b19af96f0389b1d03a7a0175a307ff17fe
 author: "Camila Zarate Ospina, Savannah Artusi, and Autumn Dunn"
 fontsize: 12pt
 mainfont: Times New Roman
@@ -36,6 +41,31 @@ theme_set(mytheme)
 ```
 
 Input Raw Data
+<<<<<<< HEAD
+```{r}
+# Load your datasets
+<<<<<<< HEAD
+#Identify gauge to download
+siteNo <- '02138520' 
+=======
+#Identify gauge
+# Falls lake (Durham) - 02087182
+# Roanoake River (Jamesville) - 02081094
+# Roanoake River (Halifax) - 0208062765
+# Hyco Creek (Leasburg) - 02077200
+
+#Gauges in the path
+# Catawba River  (Pleasant Gardens) - 02137727
+# Yadkin River (Patterson) - 02111000
+# Mills River (Mills River) - 03446000
+# French Broad River (Fletcher) - 03447687
+
+#select site
+siteNo <-"02087182"
+>>>>>>> 3ada5fff5d0330caec2831fa47bd8b1b00e40db5
+
+#Identify parameter of interest: 
+=======
 ```{r DataRaw}
 # Select Site
 siteNo1 <-"02137727"
@@ -44,6 +74,7 @@ siteNo3 <-"03446000"
 siteNo4 <-"03447687"
 
 # Identify parameter of interest: 
+>>>>>>> 500aa9b19af96f0389b1d03a7a0175a307ff17fe
 pcode = '00065' #gage height (feet)
 
 # Identify statistic code for daily values: 
@@ -121,6 +152,17 @@ saveRDS(Yadkin_sept, file ="../Data/Processed/Yadkin_sept.rds")
 Mills$Date<-as.Date(Mills$Date, format = "%Y/%m/%d")
 Mills_sept <- Mills %>% 
                   select(Date, GH) %>% 
+<<<<<<< HEAD
+                  rename(GageHeight = "GH")
+<<<<<<< HEAD
+                   
+=======
+          
+Combo_wide <-    bind_cols(Water_2001, Water_2018)   
+Combo_long <- full_join(Water_2001, Water_2018, by = c("Date", "GageHeight"))
+
+>>>>>>> 3ada5fff5d0330caec2831fa47bd8b1b00e40db5
+=======
                   mutate(Month = month(Date),
                          Year = year(Date)) %>% 
                   filter(Month %in% ("9")) %>% 
@@ -136,6 +178,7 @@ FrenchBroad_sept <- FrenchBroad %>%
                   filter(Month %in% ("9")) %>% 
                   select(Date, GH, Year)
 saveRDS(FrenchBroad_sept, file ="../Data/Processed/FrenchBroad_sept.rds")
+>>>>>>> 500aa9b19af96f0389b1d03a7a0175a307ff17fe
 ```
 
 # Rationale and Research Questions
