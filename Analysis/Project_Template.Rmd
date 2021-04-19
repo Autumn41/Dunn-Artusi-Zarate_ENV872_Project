@@ -10,7 +10,7 @@ subtitle: "https://github.com/Autumn41/Dunn-Artusi-Zarate_ENV872_Project.git"
 author: "Camila Zarate Ospina, Savannah Artusi, and Autumn Dunn"
 fontsize: 12pt
 mainfont: Times New Roman
-
+ 
 ---
 
 \newpage
@@ -21,7 +21,7 @@ mainfont: Times New Roman
 \listoffigures 
 \newpage
 
-Set-Up Work Space
+Set-Up Work Space 
 ```{r setup, include=FALSE}
 # Load packages
 if(!require(pacman)) install.packages("pacman")
@@ -32,6 +32,7 @@ mytheme <- theme_grey() +
   theme(axis.text = element_text(color = "black"), 
         legend.position = "right")
 theme_set(mytheme)
+
 ```
 
 Input Raw Data
