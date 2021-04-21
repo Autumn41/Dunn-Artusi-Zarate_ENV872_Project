@@ -314,18 +314,47 @@ ggplot(Yadkin_df, aes(x = factor(Year), y = GH)) +
   geom_boxplot() + 
   labs(x = "Year", y = "Gage Height (ft)", title = "Yadkin 2001 vs. 2018")
 
-## Mills - GLM
-Mills_GLM <- lm(Mills_sept$GH ~ Mills_sept$Year)
-summary(Mills_GLM)
-plot(Mills_GLM)
+## French Broad - T-Test
+# Create Dataframes
+FrenchBroad_2001 <- FrenchBroad_sept %>% filter(Year== 2001)
+FrenchBroad_2018 <- FrenchBroad_sept %>% filter(Year== 2018)
 
-# FrenchBroad - GLM
-FrenchBroad_GLM <- lm(FrenchBroad_sept$GH ~ FrenchBroad_sept$Year)
-summary(FrenchBroad_GLM)
-plot(FrenchBroad_GLM)
+#Check assumptions
+var.test(FrenchBroad_2001$GH, FrenchBroad_2018$GH)
+sd(FrenchBroad_2001$GH)/sd(FrenchBroad_2018$GH)
+hist(FrenchBroad_2018$GH)
+hist(FrenchBroad_2001$GH)
+
+#Run t-test
+t.test(FrenchBroad_2001$GH, FrenchBroad_2018$GH, var.equal = T)
+
+#Graph
+FrenchBroad_df <- rbind(FrenchBroad_2001, FrenchBroad_2018)
+ggplot(FrenchBroad_df, aes(x = factor(Year), y = GH)) + 
+  geom_boxplot() + 
+  labs(x = "Year", y = "Gage Height (ft)", title = "French Broad 2001 vs. 2018")
+
+## Mills - T-Test
+# Create Dataframes
+Mills_2001 <- Mills_sept %>% filter(Year== 2001)
+Mills_2018 <- Mills_sept %>% filter(Year== 2018)
+
+#Check assumptions
+var.test(Mills_2001$GH, Mills_2018$GH)
+sd(Mills_2001$GH)/sd(Mills_2018$GH)
+hist(Mills_2018$GH)
+hist(Mills_2001$GH)
+
+#Run t-test
+t.test(Mills_2001$GH, Mills_2018$GH, var.equal = T)
+
+#Graph
+Mills_df <- rbind(Mills_2001, Mills_2018)
+ggplot(Mills_df, aes(x = factor(Year), y = GH)) + 
+  geom_boxplot() + 
+  labs(x = "Year", y = "Gage Height (ft)", title = "Mills 2001 vs. 2018")     
 
 ```
-
 
 
 ## Question 1: Has gage height changed over 2000-2020 for September from hurricanes? 
