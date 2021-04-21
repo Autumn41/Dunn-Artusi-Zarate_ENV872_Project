@@ -146,6 +146,8 @@ saveRDS(FrenchBroad_sept, file ="../Data/Processed/FrenchBroad_sept.rds")
 
   From 2000 to 2020, North Carolina was hit with 64 hurricanes and 26 of those hurricanes occurred in September. With climate change, hurricanes are expected to occur more frequently and at higher intensity (Elsner, 2006). Higher intensity storms will likely cause flooding of cities and urban areas which many infrastructures are not designed to accommodate (James et al., 2020; Marsooli & Lin, 2020). Additionally, much of North Carolina Piedmont wetlands have been drained and many streams are degraded due to urban disturbances(Carle, 2011; Violin et al., 2011). Wetlands and streams are natural systems that store flood water, and without them, many areas that have not flooded in the past will be at risk (Ameli & Creed, 2019). Investing in pre-disaster hazard mitigation has been shown to be economically beneficial and save lives (Villa, 2020). In order to update infrastructure, expected water input and time period of elevated water levels are needed. Using stream gage height, we selected Catawba River, Yadkin River, Mills River, and French Broad River, because of their location along the path of Hurrican Florence, which hit North Carolina in 2018. We focused on two questions: has gage height changed over 2000-2020 for September from hurricanes and how much does a stream gage height change after a hurricane?
 
+  From 2000 to 2020, North Carolina was hit with 64 hurricanes and 26 of those hurricanes occurred in September. With climate change, hurricanes are expected to occur more frequently and at higher intensity (Elsner, 2006). Higher intensity storms will likely cause flooding of cities and urban areas which many infrastructures are not designed to accommodate (James et al., 2020; Marsooli & Lin, 2020). Additionally, much of North Carolina Piedmont wetlands have been drained and many streams are degraded due to urban disturbances (Carle, 2011; Violin et al., 2011). Wetlands and streams are natural systems that store flood water, and without them, many areas that have not flooded in the past will be at risk (Ameli & Creed, 2019). Investing in pre-disaster hazard mitigation has been shown to be economically beneficial and save lives (Villa, 2020). In order to update infrastructure, expected water input and time period of elevated water levels are needed. Using stream gage height, we selected Catawba River, Yadkin River, Mills River, and French Broad River, because of their location along hurricane paths. We focused on two questions: has gage height changed over 2000-2020 for September from hurricanes and how much does a stream gage height change after a hurricane?
+
 \newpage
 
 # Dataset Information
@@ -380,16 +382,16 @@ kable(Results_df, col.names = c("River Name", "2001 Average GH",
                   caption = "Results", digits = c(0, 2, 2, 2, 2, 8)) %>% 
   column_spec(1:5,border_left = T, border_right = T) %>%
   kable_styling()
+
 ```
 
 
 ## Question 1: Has gage height changed over 2000-2020 for September from hurricanes? 
 
-Catawba River, Yadkin River, Mills River, and French Broad River had a significant (p-value < 0.05) monotonic upward trend. Catawba River had the largest upward trend (0.206) and Yadkin River and Mills River had the smallest upward trend (0.0218).
+Yadkin River, Mills River, and French Broad River had a significant (p-value < 0.05) monotonic upward trend. Catawba River had the largest upward trend (0.206) and Yadkin River and Mills River had the smallest upward trend (0.0218).
 
 ## Question 2: How much does a stream gage height change after a hurricane? 
 
-Catawba River
 Yadkin River
 Mills River
 French Broad River
