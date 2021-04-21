@@ -27,14 +27,15 @@ Set-Up Work Space
 ```{r setup, include=FALSE}
 # Load packages
 if(!require(pacman)) install.packages("pacman")
-pacman::p_load(tidyverse, lubridate, ggpubr, dplyr, zoo, dataRetrieval)
+pacman::p_load(tidyverse, lubridate, ggpubr, dplyr, zoo, dataRetrieval, knitr, 
+               kableExtra)
 
 # Set ggplot theme
 mytheme <- theme_grey() +
   theme(axis.text = element_text(color = "black"), 
-        legend.position = "right")
+        legend.position = "right", 
+        plot.title = element_text(hjust = 0.5))
 theme_set(mytheme)
-
 ```
 
 Input Raw Data
@@ -143,7 +144,7 @@ saveRDS(FrenchBroad_sept, file ="../Data/Processed/FrenchBroad_sept.rds")
 
 # Rationale and Research Questions
 
-  From 2000 to 2020, North Carolina was hit with 64 hurricanes and 26 of those hurricanes occurred in September. With climate change, hurricanes are expected to occur more frequently and at higher intensity (Elsner, 2006). Higher intensity storms will likely cause flooding of cities and urban areas which many infrastructures are not designed to accommodate (James et al., 2020; Marsooli & Lin, 2020). Additionally, much of North Carolina Piedmont wetlands have been drained and many streams are degraded due to urban disturbances(Carle, 2011; Violin et al., 2011). Wetlands and streams are natural systems that store flood water, and without them, many areas that have not flooded in the past will be at risk (Ameli & Creed, 2019). Investing in pre-disaster hazard mitigation has been shown to be economically beneficial and save lives (Villa, 2020). In order to update infrastructure, expected water input and time period of elevated water levels are needed. Using stream gage height, we selected Catawba River, Yadkin River, Mills River, and French Broad River, because of their location along hurricane paths. We focused on two questions: has gage height changed over 2000-2020 for September from hurricanes and how much does a stream gage height change after a hurricane?
+  From 2000 to 2020, North Carolina was hit with 64 hurricanes and 26 of those hurricanes occurred in September. With climate change, hurricanes are expected to occur more frequently and at higher intensity (Elsner, 2006). Higher intensity storms will likely cause flooding of cities and urban areas which many infrastructures are not designed to accommodate (James et al., 2020; Marsooli & Lin, 2020). Additionally, much of North Carolina Piedmont wetlands have been drained and many streams are degraded due to urban disturbances (Carle, 2011; Violin et al., 2011). Wetlands and streams are natural systems that store flood water, and without them, many areas that have not flooded in the past will be at risk (Ameli & Creed, 2019). Investing in pre-disaster hazard mitigation has been shown to be economically beneficial and save lives (Villa, 2020). In order to update infrastructure, expected water input and time period of elevated water levels are needed. Using stream gage height, we selected Catawba River, Yadkin River, Mills River, and French Broad River, because of their location along hurricane paths. We focused on two questions: has gage height changed over 2000-2020 for September from hurricanes and how much does a stream gage height change after a hurricane?
 
 \newpage
 
@@ -289,33 +290,91 @@ summary(Month_FrenchBroad_trend)
 
 ```
 
-GLM model comparing Septembers from 2000 - 2020
-```{r GLM}
-#H0: Gage Height is the same in September every year
-#Ha: Gage Height is not the same in September every year
+T-Test comparing September 2001 to 2018
+```{r T-Test}
+#H0: Gage Height is the same in September for both years
+#Ha: Gage Height is not the same in September for both years
 
-# Catawba - GLM
-Catawba_GLM <- lm(Catawba_sept$GH ~ Catawba_sept$Year)
-summary(Catawba_GLM)
-plot(Catawba_GLM)
+## Yadkin - T-Test
+# Create Dataframes
+Yadkin_2001 <- Yadkin_sept %>% filter(Year== 2001)
+Yadkin_2018 <- Yadkin_sept %>% filter(Year== 2018)
 
-# Yadkin - GLM
-Yadkin_GLM <- lm(Yadkin_sept$GH ~ Yadkin_sept$Year)
-summary(Yadkin_GLM)
-plot(Yadkin_GLM)
+#Check assumptions
+Yadkin_var <- var.test(Yadkin_2001$GH, Yadkin_2018$GH)
+sd(Yadkin_2001$GH)/sd(Yadkin_2018$GH)
+hist(Yadkin_2018$GH)
+hist(Yadkin_2001$GH)
 
-# Mills - GLM
-Mills_GLM <- lm(Mills_sept$GH ~ Mills_sept$Year)
-summary(Mills_GLM)
-plot(Mills_GLM)
+#Run t-test
+Yadkin_test <- t.test(Yadkin_2001$GH, Yadkin_2018$GH, var.equal = T)
 
-# FrenchBroad - GLM
-FrenchBroad_GLM <- lm(FrenchBroad_sept$GH ~ FrenchBroad_sept$Year)
-summary(FrenchBroad_GLM)
-plot(FrenchBroad_GLM)
+#Graph
+Yadkin_df <- rbind(Yadkin_2001, Yadkin_2018)
+ggplot(Yadkin_df, aes(x = factor(Year), y = GH)) + 
+  geom_boxplot() + 
+  labs(x = "Year", y = "Gage Height (ft)", title = "Yadkin 2001 vs. 2018")
+
+## French Broad - T-Test
+# Create Dataframes
+FrenchBroad_2001 <- FrenchBroad_sept %>% filter(Year== 2001)
+FrenchBroad_2018 <- FrenchBroad_sept %>% filter(Year== 2018)
+
+#Check assumptions
+FrenchBroad_var <- var.test(FrenchBroad_2001$GH, FrenchBroad_2018$GH)
+sd(FrenchBroad_2001$GH)/sd(FrenchBroad_2018$GH)
+hist(FrenchBroad_2018$GH)
+hist(FrenchBroad_2001$GH)
+
+#Run t-test
+FrenchBroad_test <- t.test(FrenchBroad_2001$GH, FrenchBroad_2018$GH, var.equal = T)
+
+#Graph
+FrenchBroad_df <- rbind(FrenchBroad_2001, FrenchBroad_2018)
+ggplot(FrenchBroad_df, aes(x = factor(Year), y = GH)) + 
+  geom_boxplot() + 
+  labs(x = "Year", y = "Gage Height (ft)", title = "French Broad 2001 vs. 2018")
+
+
+## Mills - T-Test
+# Create Dataframes
+Mills_2001 <- Mills_sept %>% filter(Year== 2001)
+Mills_2018 <- Mills_sept %>% filter(Year== 2018)
+
+#Check assumptions
+Mills_var <- var.test(Mills_2001$GH, Mills_2018$GH)
+sd(Mills_2001$GH)/sd(Mills_2018$GH)
+hist(Mills_2018$GH)
+hist(Mills_2001$GH)
+
+#Run t-test
+Mills_test <- t.test(Mills_2001$GH, Mills_2018$GH, var.equal = T)
+
+#Graph
+Mills_df <- rbind(Mills_2001, Mills_2018)
+ggplot(Mills_df, aes(x = factor(Year), y = GH)) + 
+  geom_boxplot() + 
+  labs(x = "Year", y = "Gage Height (ft)", title = "Mills 2001 vs. 2018")     
+
+#Create Table of Results
+Results_df <- data.frame("River_Name" = c('Yadkin River', 'Mills River', 
+                                          'French Broad River'),
+                 "Average_GH_2001" = c(mean(Yadkin_2001$GH), mean(Mills_2001$GH),
+                                       mean(FrenchBroad_2001$GH)),
+                 "Average_GH_2018" = c(mean(Yadkin_2018$GH), mean(Mills_2018$GH),
+                                       mean(FrenchBroad_2018$GH)),
+                 "var.test_Result" = c(Yadkin_var$statistic, Mills_var$statistic,
+                                       FrenchBroad_var$statistic),
+                 "P-Value" = c(Yadkin_test$p.value, Mills_test$p.value,
+                               FrenchBroad_test$p.value))
+
+kable(Results_df, col.names = c("River Name", "2001 Average GH", 
+                                "2018 Average GH", "var.test Result", "P-Value"), 
+                  caption = "Results", digits = c(0, 2, 2, 2, 8)) %>% 
+  column_spec(1:5,border_left = T, border_right = T) %>%
+  kable_styling()
 
 ```
-
 
 
 ## Question 1: Has gage height changed over 2000-2020 for September from hurricanes? 
@@ -324,7 +383,6 @@ Catawba River, Yadkin River, Mills River, and French Broad River had a significa
 
 ## Question 2: How much does a stream gage height change after a hurricane? 
 
-Catawba River
 Yadkin River
 Mills River
 French Broad River
