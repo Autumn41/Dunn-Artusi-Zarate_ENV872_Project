@@ -326,9 +326,6 @@ sd(FrenchBroad_2001$GH)/sd(FrenchBroad_2018$GH)
 hist(FrenchBroad_2018$GH)
 hist(FrenchBroad_2001$GH)
 
-<<<<<<< HEAD
-```
-=======
 #Run t-test
 t.test(FrenchBroad_2001$GH, FrenchBroad_2018$GH, var.equal = T)
 
@@ -338,11 +335,11 @@ ggplot(FrenchBroad_df, aes(x = factor(Year), y = GH)) +
   geom_boxplot() + 
   labs(x = "Year", y = "Gage Height (ft)", title = "French Broad 2001 vs. 2018")
 
+
 ## Mills - T-Test
 # Create Dataframes
 Mills_2001 <- Mills_sept %>% filter(Year== 2001)
 Mills_2018 <- Mills_sept %>% filter(Year== 2018)
->>>>>>> 60c64bcf4529e4fb0d935a7a278a6e6de8c36fbd
 
 #Check assumptions
 var.test(Mills_2001$GH, Mills_2018$GH)
@@ -359,6 +356,19 @@ ggplot(Mills_df, aes(x = factor(Year), y = GH)) +
   geom_boxplot() + 
   labs(x = "Year", y = "Gage Height (ft)", title = "Mills 2001 vs. 2018")     
 
+#Create Table of Results
+Results_df <- data.frame("River_Name" = c('Yadkin River', 'Mills River', 
+                                          'French Broad River'),
+                 "Average_GH_2001" = c(mean(Yadkin_2001$GH), 2, 2),
+                 "Average_GH_2018" = c(mean(Yadkin_2018$GH), 2, 2),
+                 "var.test_Result" = c(Yadkin_var$statistic, 2, 2),
+                 "P-Value" = c(Yadkin_test$p.value, 2.0005, 2.0005))
+
+kable(Results_df, col.names = c("River Name", "2001 Average GH", 
+                                "2018 Average GH", "var.test Result", "P-Value"), 
+                  caption = "Results") %>% 
+  column_spec(1:5,border_left = T, border_right = T) %>%
+  kable_styling()
 ```
 
 
