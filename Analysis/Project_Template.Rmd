@@ -321,13 +321,13 @@ FrenchBroad_2001 <- FrenchBroad_sept %>% filter(Year== 2001)
 FrenchBroad_2018 <- FrenchBroad_sept %>% filter(Year== 2018)
 
 #Check assumptions
-var.test(FrenchBroad_2001$GH, FrenchBroad_2018$GH)
+FrenchBroad_var <- var.test(FrenchBroad_2001$GH, FrenchBroad_2018$GH)
 sd(FrenchBroad_2001$GH)/sd(FrenchBroad_2018$GH)
 hist(FrenchBroad_2018$GH)
 hist(FrenchBroad_2001$GH)
 
 #Run t-test
-t.test(FrenchBroad_2001$GH, FrenchBroad_2018$GH, var.equal = T)
+FrenchBroad_test <- t.test(FrenchBroad_2001$GH, FrenchBroad_2018$GH, var.equal = T)
 
 #Graph
 FrenchBroad_df <- rbind(FrenchBroad_2001, FrenchBroad_2018)
@@ -342,13 +342,13 @@ Mills_2001 <- Mills_sept %>% filter(Year== 2001)
 Mills_2018 <- Mills_sept %>% filter(Year== 2018)
 
 #Check assumptions
-var.test(Mills_2001$GH, Mills_2018$GH)
+Mills_var <- var.test(Mills_2001$GH, Mills_2018$GH)
 sd(Mills_2001$GH)/sd(Mills_2018$GH)
 hist(Mills_2018$GH)
 hist(Mills_2001$GH)
 
 #Run t-test
-t.test(Mills_2001$GH, Mills_2018$GH, var.equal = T)
+Mills_test <- t.test(Mills_2001$GH, Mills_2018$GH, var.equal = T)
 
 #Graph
 Mills_df <- rbind(Mills_2001, Mills_2018)
@@ -359,14 +359,18 @@ ggplot(Mills_df, aes(x = factor(Year), y = GH)) +
 #Create Table of Results
 Results_df <- data.frame("River_Name" = c('Yadkin River', 'Mills River', 
                                           'French Broad River'),
-                 "Average_GH_2001" = c(mean(Yadkin_2001$GH), 2, 2),
-                 "Average_GH_2018" = c(mean(Yadkin_2018$GH), 2, 2),
-                 "var.test_Result" = c(Yadkin_var$statistic, 2, 2),
-                 "P-Value" = c(Yadkin_test$p.value, 2.0005, 2.0005))
+                 "Average_GH_2001" = c(mean(Yadkin_2001$GH), mean(Mills_2001$GH),
+                                       mean(FrenchBroad_2001$GH)),
+                 "Average_GH_2018" = c(mean(Yadkin_2018$GH), mean(Mills_2018$GH),
+                                       mean(FrenchBroad_2018$GH)),
+                 "var.test_Result" = c(Yadkin_var$statistic, Mills_var$statistic,
+                                       FrenchBroad_var$statistic),
+                 "P-Value" = c(Yadkin_test$p.value, Mills_test$p.value,
+                               FrenchBroad_test$p.value))
 
 kable(Results_df, col.names = c("River Name", "2001 Average GH", 
                                 "2018 Average GH", "var.test Result", "P-Value"), 
-                  caption = "Results") %>% 
+                  caption = "Results", digits = c(0, 2, 2, 2, 8)) %>% 
   column_spec(1:5,border_left = T, border_right = T) %>%
   kable_styling()
 ```
