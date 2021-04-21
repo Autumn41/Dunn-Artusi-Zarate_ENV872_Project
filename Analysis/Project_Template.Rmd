@@ -32,9 +32,9 @@ pacman::p_load(tidyverse, lubridate, ggpubr, dplyr, zoo, dataRetrieval)
 # Set ggplot theme
 mytheme <- theme_grey() +
   theme(axis.text = element_text(color = "black"), 
-        legend.position = "right")
+        legend.position = "right", 
+        plot.title = element_text(hjust = 0.5))
 theme_set(mytheme)
-
 ```
 
 Input Raw Data
@@ -289,22 +289,32 @@ summary(Month_FrenchBroad_trend)
 
 ```
 
-GLM model comparing Septembers from 2000 - 2020
-```{r GLM}
-#H0: Gage Height is the same in September every year
-#Ha: Gage Height is not the same in September every year
+T-Test comparing September 2001 to 2018
+```{r T-Test}
+#H0: Gage Height is the same in September for both years
+#Ha: Gage Height is not the same in September for both years
 
-# Catawba - GLM
-Catawba_GLM <- lm(Catawba_sept$GH ~ Catawba_sept$Year)
-summary(Catawba_GLM)
-plot(Catawba_GLM)
+## Yadkin - T-Test
+# Create Dataframes
+Yadkin_2001 <- Yadkin_sept %>% filter(Year== 2001)
+Yadkin_2018 <- Yadkin_sept %>% filter(Year== 2018)
 
-# Yadkin - GLM
-Yadkin_GLM <- lm(Yadkin_sept$GH ~ Yadkin_sept$Year)
-summary(Yadkin_GLM)
-plot(Yadkin_GLM)
+#Check assumptions
+var.test(Yadkin_2001$GH, Yadkin_2018$GH)
+sd(Yadkin_2001$GH)/sd(Yadkin_2018$GH)
+hist(Yadkin_2018$GH)
+hist(Yadkin_2001$GH)
 
-# Mills - GLM
+#Run t-test
+t.test(Yadkin_2001$GH, Yadkin_2018$GH, var.equal = T)
+
+#Graph
+Yadkin_df <- rbind(Yadkin_2001, Yadkin_2018)
+ggplot(Yadkin_df, aes(x = factor(Year), y = GH)) + 
+  geom_boxplot() + 
+  labs(x = "Year", y = "Gage Height (ft)", title = "Yadkin 2001 vs. 2018")
+
+## Mills - GLM
 Mills_GLM <- lm(Mills_sept$GH ~ Mills_sept$Year)
 summary(Mills_GLM)
 plot(Mills_GLM)
