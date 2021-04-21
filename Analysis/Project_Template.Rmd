@@ -27,7 +27,8 @@ Set-Up Work Space
 ```{r setup, include=FALSE}
 # Load packages
 if(!require(pacman)) install.packages("pacman")
-pacman::p_load(tidyverse, lubridate, ggpubr, dplyr, zoo, dataRetrieval)
+pacman::p_load(tidyverse, lubridate, ggpubr, dplyr, zoo, dataRetrieval, knitr, 
+               kableExtra)
 
 # Set ggplot theme
 mytheme <- theme_grey() +
@@ -300,13 +301,13 @@ Yadkin_2001 <- Yadkin_sept %>% filter(Year== 2001)
 Yadkin_2018 <- Yadkin_sept %>% filter(Year== 2018)
 
 #Check assumptions
-var.test(Yadkin_2001$GH, Yadkin_2018$GH)
+Yadkin_var <- var.test(Yadkin_2001$GH, Yadkin_2018$GH)
 sd(Yadkin_2001$GH)/sd(Yadkin_2018$GH)
 hist(Yadkin_2018$GH)
 hist(Yadkin_2001$GH)
 
 #Run t-test
-t.test(Yadkin_2001$GH, Yadkin_2018$GH, var.equal = T)
+Yadkin_test <- t.test(Yadkin_2001$GH, Yadkin_2018$GH, var.equal = T)
 
 #Graph
 Yadkin_df <- rbind(Yadkin_2001, Yadkin_2018)
@@ -324,6 +325,19 @@ FrenchBroad_GLM <- lm(FrenchBroad_sept$GH ~ FrenchBroad_sept$Year)
 summary(FrenchBroad_GLM)
 plot(FrenchBroad_GLM)
 
+#Create Table of Results
+Results_df <- data.frame("River_Name" = c('Yadkin River', 'Mills River', 
+                                          'French Broad River'),
+                 "Average_GH_2001" = c(mean(Yadkin_2001$GH), 2, 2),
+                 "Average_GH_2018" = c(mean(Yadkin_2018$GH), 2, 2),
+                 "var.test_Result" = c(Yadkin_var$statistic, 2, 2),
+                 "P-Value" = c(Yadkin_test$p.value, 2.0005, 2.0005))
+
+kable(Results_df, col.names = c("River Name", "2001 Average GH", 
+                                "2018 Average GH", "var.test Result", "P-Value"), 
+                  caption = "Results") %>% 
+  column_spec(1:5,border_left = T, border_right = T) %>%
+  kable_styling()
 ```
 
 
