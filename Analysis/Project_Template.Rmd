@@ -55,12 +55,6 @@ start.date = "2000-01-01"
 end.date = "2020-12-01"
 
 # Load in data using the package's "readNWISdv" function
-Catawba <- readNWISdv(siteNumbers = siteNo1, 
-                    parameterCd = pcode, 
-                    statCd = scode, 
-                    startDate=start.date, 
-                    endDate=end.date)
-
 Yadkin <- readNWISdv(siteNumbers = siteNo2, 
                     parameterCd = pcode, 
                     statCd = scode, 
@@ -80,10 +74,6 @@ FrenchBroad <- readNWISdv(siteNumbers = siteNo4,
                     endDate=end.date)
 
 # Rename columns
-Catawba <- renameNWISColumns(Catawba); 
-colnames(Catawba)
-saveRDS(Catawba, file ="../Data/Raw/Catawba.rds")
-
 Yadkin <- renameNWISColumns(Yadkin); 
 colnames(Yadkin)
 saveRDS(Yadkin, file ="../Data/Raw/Yadkin.rds")
@@ -98,15 +88,6 @@ saveRDS(FrenchBroad, file ="../Data/Raw/FrenchBroad.rds")
 
 
 ```{r DataProcessing, include=FALSE}
-#Catawba
-Catawba$Date<-as.Date(Catawba$Date, format = "%Y/%m/%d")
-Catawba_sept <- Catawba %>% 
-                  select(Date, GH) %>% 
-                  mutate(Month = month(Date),
-                         Year = year(Date)) %>% 
-                  filter(Month %in% ("9")) %>% 
-                  select(Date, GH, Year)
-saveRDS(Catawba_sept, file ="../Data/Processed/Catawba_sept.rds")
 
 #Yadkin
 Yadkin$Date<-as.Date(Yadkin$Date, format = "%Y/%m/%d")
@@ -171,16 +152,6 @@ French Broad River | (Fletcher)       | 03447687
 Write to explain the graphs - Autumn
 Savannah historgrams. 
 ```{r Plots}
-#Plot 1 - Catawba Gage Height as points on individual plots for September
-ggplot(Catawba_sept, aes(y=GH, x=Date)) +
-  geom_point() +
-  xlab("Date") +
-  ylab("Gage Height (feet)") +
-  mytheme +
-  facet_wrap(vars(Year)) 
-```
-
-```{r Plots}
 #Plot 2 - Yadkin Gage Height as points on individual plots for September
 ggplot(Yadkin_sept, aes(y=GH, x=Date)) +
   geom_point() +
@@ -219,27 +190,6 @@ Time Series of four rivers from 2000 - 2020
 
 Add paragraph explaining ts. 
 ```{r TimeSeries}
-
-## Catawba ##
-
-# Generate time series
-Start_month <- month(first(Catawba_sept))
-Start_year <- year(first(Catawba_sept))
-
-Catawba.daily.ts <- ts(Catawba$GH,
-                   start=c(Start_year,Start_month),
-                   frequency=30) 
-
-# Decompose
-Day_Catawba_decomp <- stl(Catawba.daily.ts, s.window = "periodic")
-plot(Day_Catawba_decomp)
-
-# Run SMK test
-Month_Catawba_trend <- Kendall::SeasonalMannKendall(Catawba.daily.ts)
-
-# Inspect results
-summary(Month_Catawba_trend)
-
 
 ## Yadkin ##
 
