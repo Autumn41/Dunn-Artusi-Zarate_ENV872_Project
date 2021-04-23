@@ -39,7 +39,6 @@ theme_set(mytheme)
 
 ```{r DataRaw, include=FALSE}
 # Select Site
-siteNo1 <-"02137727"
 siteNo2 <-"02111000"
 siteNo3 <-"03446000"
 siteNo4 <-"03447687"
@@ -84,6 +83,11 @@ saveRDS(Mills, file ="../Data/Raw/Mills.rds")
 
 FrenchBroad <- renameNWISColumns(FrenchBroad); 
 saveRDS(FrenchBroad, file ="../Data/Raw/FrenchBroad.rds")
+
+# Save the data as a csv
+write.csv(df,"C:\\Users\\Ron\\Desktop\\MyData.csv", row.names = FALSE)
+
+
 ```
 
 
@@ -137,7 +141,6 @@ Site locations and site codes:
 
 River Names        | NC City          | Site Code   
 -------------------|------------------|-----------
-Catawba River      | Pleasant Gardens | 02137727  
 Yadkin River       | Patterson        | 02111000  
 Mills River        | Mills River      | 03446000  
 French Broad River | (Fletcher)       | 03447687  
@@ -151,7 +154,7 @@ French Broad River | (Fletcher)       | 03447687
 
 Write to explain the graphs - Autumn
 Savannah historgrams. 
-```{r Plots}
+```{r Plots, echo = FALSE}
 #Plot 2 - Yadkin Gage Height as points on individual plots for September
 ggplot(Yadkin_sept, aes(y=GH, x=Date)) +
   geom_point() +
@@ -161,7 +164,7 @@ ggplot(Yadkin_sept, aes(y=GH, x=Date)) +
   facet_wrap(vars(Year)) 
 ```
 
-```{r Plots}
+```{r Plots, echo = FALSE}
 #Plot 3 - Mills Gage Height as points on individual plots for September
 ggplot(Mills_sept, aes(y=GH, x=Date)) +
   geom_point() +
@@ -171,7 +174,7 @@ ggplot(Mills_sept, aes(y=GH, x=Date)) +
   facet_wrap(vars(Year)) 
 ```
 
-```{r Plots}
+```{r Plots, echo = FALSE}
 #Plot 4 - FrenchBroad Gage Height as points on individual plots for September
 ggplot(FrenchBroad_sept, aes(y=GH, x=Date)) +
   geom_point() +
@@ -189,7 +192,7 @@ ggplot(FrenchBroad_sept, aes(y=GH, x=Date)) +
 Time Series of four rivers from 2000 - 2020
 
 Add paragraph explaining ts. 
-```{r TimeSeries}
+```{r TimeSeries, include=FALSE}
 
 ## Yadkin ##
 
@@ -256,7 +259,7 @@ summary(Month_FrenchBroad_trend)
 ```
 
 T-Test comparing September 2001 to 2018
-```{r T-Test}
+```{r T-Test, include=FALSE}
 #H0: Gage Height is the same in September for both years
 #Ha: Gage Height is not the same in September for both years
 
@@ -320,7 +323,9 @@ Mills_df <- rbind(Mills_2001, Mills_2018)
 ggplot(Mills_df, aes(x = factor(Year), y = GH)) + 
   geom_boxplot() + 
   labs(x = "Year", y = "Gage Height (ft)", title = "Mills 2001 vs. 2018")     
+```
 
+```{r ResultsTable, echo=FALSE}
 #Create Table of Results
 Results_df <- data.frame("River_Name" = c('Yadkin', 'Mills', 
                                           'French Broad'),
