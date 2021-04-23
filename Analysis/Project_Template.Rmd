@@ -154,8 +154,8 @@ French Broad River | (Fletcher)       | 03447687
 
 Write to explain the graphs - Autumn
 Savannah historgrams. 
-```{r Plots, echo = FALSE}
-#Plot 2 - Yadkin Gage Height as points on individual plots for September
+```{r Plot1, echo = FALSE}
+#Plot 1 - Yadkin Gage Height as points on individual plots for September
 ggplot(Yadkin_sept, aes(y=GH, x=Date)) +
   geom_point() +
   xlab("Date") +
@@ -164,8 +164,8 @@ ggplot(Yadkin_sept, aes(y=GH, x=Date)) +
   facet_wrap(vars(Year)) 
 ```
 
-```{r Plots, echo = FALSE}
-#Plot 3 - Mills Gage Height as points on individual plots for September
+```{r Plot2, echo = FALSE}
+#Plot 2 - Mills Gage Height as points on individual plots for September
 ggplot(Mills_sept, aes(y=GH, x=Date)) +
   geom_point() +
   xlab("Date") +
@@ -174,8 +174,8 @@ ggplot(Mills_sept, aes(y=GH, x=Date)) +
   facet_wrap(vars(Year)) 
 ```
 
-```{r Plots, echo = FALSE}
-#Plot 4 - FrenchBroad Gage Height as points on individual plots for September
+```{r Plot3, echo = FALSE}
+#Plot 3 - FrenchBroad Gage Height as points on individual plots for September
 ggplot(FrenchBroad_sept, aes(y=GH, x=Date)) +
   geom_point() +
   xlab("Date") +
