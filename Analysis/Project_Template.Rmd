@@ -178,7 +178,9 @@ ggplot(Catawba_sept, aes(y=GH, x=Date)) +
   ylab("Gage Height (feet)") +
   mytheme +
   facet_wrap(vars(Year)) 
+```
 
+```{r Plots}
 #Plot 2 - Yadkin Gage Height as points on individual plots for September
 ggplot(Yadkin_sept, aes(y=GH, x=Date)) +
   geom_point() +
@@ -186,7 +188,9 @@ ggplot(Yadkin_sept, aes(y=GH, x=Date)) +
   ylab("Gage Height (feet)") +
   mytheme +
   facet_wrap(vars(Year)) 
+```
 
+```{r Plots}
 #Plot 3 - Mills Gage Height as points on individual plots for September
 ggplot(Mills_sept, aes(y=GH, x=Date)) +
   geom_point() +
@@ -194,7 +198,9 @@ ggplot(Mills_sept, aes(y=GH, x=Date)) +
   ylab("Gage Height (feet)") +
   mytheme +
   facet_wrap(vars(Year)) 
+```
 
+```{r Plots}
 #Plot 4 - FrenchBroad Gage Height as points on individual plots for September
 ggplot(FrenchBroad_sept, aes(y=GH, x=Date)) +
   geom_point() +
@@ -203,7 +209,6 @@ ggplot(FrenchBroad_sept, aes(y=GH, x=Date)) +
   mytheme +
   facet_wrap(vars(Year)) 
 ```
-
 
 
 \newpage
