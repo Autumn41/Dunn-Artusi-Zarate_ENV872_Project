@@ -388,7 +388,7 @@ kable(Results_df, col.names = c("River Name", "2001 Average GH",
 
 ## Question 1: Has gage height changed over 2000-2020 for September from hurricanes? 
 
-Yadkin River, Mills River, and French Broad River had a significant (p-value < 0.05) monotonic upward trend. Catawba River had the largest upward trend (0.206) and Yadkin River and Mills River had the smallest upward trend (0.0218).
+Yadkin River, Mills River, and French Broad River had a significant (p-value < 0.05) monotonic upward trend. French Broad River had the largest upward trend ( ) and Yadkin River and Mills River had the smallest upward trend (0.0218).
 
 ## Question 2: How much does a stream gage height change after a hurricane? 
 
