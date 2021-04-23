@@ -5,7 +5,7 @@ output:
     fig_caption: yes
     number_sections: yes
 geometry: margin=2.54cm
-subtitle: "Web address for GitHub repository"
+subtitle: "Web address for GitHub repository: https://github.com/Autumn41/Dunn-Artusi-Zarate_ENV872_Project.git"
 title: "Assessing water level changes from hurricanes from 2000 - 2020"
 author: "Camila Zarate Ospina, Savannah Artusi, and Autumn Dunn"
 fontsize: 12pt
@@ -21,7 +21,7 @@ mainfont: Times New Roman
 \listoffigures 
 \newpage
 
-Set-Up Work Space 
+
 ```{r setup, include=FALSE}
 # Load packages
 if(!require(pacman)) install.packages("pacman")
@@ -29,7 +29,6 @@ pacman::p_load(tidyverse, lubridate, ggpubr, dplyr, zoo, dataRetrieval, knitr,
                kableExtra)
 
 # Set ggplot theme
-# https://github.com/Autumn41/Dunn-Artusi-Zarate_ENV872_Project.git
 mytheme <- theme_grey() +
   theme(axis.text = element_text(color = "black"), 
         legend.position = "right", 
@@ -37,8 +36,8 @@ mytheme <- theme_grey() +
 theme_set(mytheme)
 ```
 
-Input Raw Data
-```{r DataRaw}
+
+```{r DataRaw, include=FALSE}
 # Select Site
 siteNo1 <-"02137727"
 siteNo2 <-"02111000"
@@ -97,8 +96,8 @@ FrenchBroad <- renameNWISColumns(FrenchBroad);
 saveRDS(FrenchBroad, file ="../Data/Raw/FrenchBroad.rds")
 ```
 
-Process Data
-```{r DataProcessing}
+
+```{r DataProcessing, include=FALSE}
 #Catawba
 Catawba$Date<-as.Date(Catawba$Date, format = "%Y/%m/%d")
 Catawba_sept <- Catawba %>% 
@@ -154,12 +153,13 @@ saveRDS(FrenchBroad_sept, file ="../Data/Processed/FrenchBroad_sept.rds")
   Data were retrieved from USGS National Water Information. USGS uses an eight digit code for each site (listed below). The parameter of interest, represented as GH in the tables, was gage height (feet), identified using the pcode 00065. Daily mean value was used, using the scode 00003.
 
 Site locations and site codes:
-River Names        | NC City          | Site Code |  
--------------------|------------------|-----------|
-Catawba River      | Pleasant Gardens | 02137727  |
-Yadkin River       | Patterson        | 02111000  |
-Mills River        | Mills River      | 03446000  |
-French Broad River | (Fletcher)       | 03447687  |
+
+River Names        | NC City          | Site Code   
+-------------------|------------------|-----------
+Catawba River      | Pleasant Gardens | 02137727  
+Yadkin River       | Patterson        | 02111000  
+Mills River        | Mills River      | 03446000  
+French Broad River | (Fletcher)       | 03447687  
 
   To process the data, gage heights for September for all available years were selected from the raw gage height data. This was done by converting the raw date to a recognized date format and filtering by month. Later, to run the t-tests, each river dataset was subsetted into two datasets, one for 2001 and one for 2018 for each river. 
   
@@ -167,6 +167,9 @@ French Broad River | (Fletcher)       | 03447687  |
 \newpage
 
 # Exploratory Analysis 
+
+Write to explain the graphs - Autumn
+Savannah historgrams. 
 ```{r Plots}
 #Plot 1 - Catawba Gage Height as points on individual plots for September
 ggplot(Catawba_sept, aes(y=GH, x=Date)) +
@@ -208,6 +211,8 @@ ggplot(FrenchBroad_sept, aes(y=GH, x=Date)) +
 # Analysis
 
 Time Series of four rivers from 2000 - 2020
+
+Add paragraph explaining ts. 
 ```{r TimeSeries}
 
 ## Catawba ##
@@ -362,8 +367,8 @@ ggplot(Mills_df, aes(x = factor(Year), y = GH)) +
   labs(x = "Year", y = "Gage Height (ft)", title = "Mills 2001 vs. 2018")     
 
 #Create Table of Results
-Results_df <- data.frame("River_Name" = c('Yadkin River', 'Mills River', 
-                                          'French Broad River'),
+Results_df <- data.frame("River_Name" = c('Yadkin', 'Mills', 
+                                          'French Broad'),
                  "Average_GH_2001" = c(mean(Yadkin_2001$GH), mean(Mills_2001$GH),
                                        mean(FrenchBroad_2001$GH)),
                  "Average_GH_2018" = c(mean(Yadkin_2018$GH), mean(Mills_2018$GH),
@@ -375,9 +380,9 @@ Results_df <- data.frame("River_Name" = c('Yadkin River', 'Mills River',
                  "P-Value" = c(Yadkin_test$p.value, Mills_test$p.value,
                                FrenchBroad_test$p.value))
 
-kable(Results_df, col.names = c("River Name", "2001 Average GH", 
-                                "2018 Average GH", "var.test Result", 
-                                "T-Statistic", "P-Value"), 
+kable(Results_df, col.names = c("River Name", "2001 Avg GH", 
+                                "2018 Avg GH", "var.test Result", 
+                                "T-Stat", "P-Value"), 
                   caption = "Results", digits = c(0, 2, 2, 2, 2, 8)) %>% 
   column_spec(1:5,border_left = T, border_right = T) %>%
   kable_styling()
@@ -389,13 +394,7 @@ kable(Results_df, col.names = c("River Name", "2001 Average GH",
 
 Yadkin River, Mills River, and French Broad River had a significant (p-value < 0.05) monotonic upward trend. French Broad River had the largest upward trend ( ) and Yadkin River and Mills River had the smallest upward trend (0.0218).
 
-## Question 2: How much does a stream gage height change after a hurricane? 
-
-Yadkin River
-Mills River
-French Broad River
-
-## Question 3: Are gage heights significantly different between 2001 and 2018?
+## Question 2: Are gage heights significantly different between 2001 and 2018?
   The mean gage heights for each river was higher in 2018 than in 2001, and these differences were statistically significant. Since the t-statistic for the Yadkin, Mills, and French Broad Rivers (-6.22, -5.37, and -6.72) are negative, this indicates that the 2018 gage heights are greater than the 2001 heights. The Yadkin River gage was 0.49 feet higher in 2018 (p-value < 0.05). The Mills River gage was 0.28 feet higher in 2018 (p-value < 0.05). The French Broad River gage was 1.28 feet higher in 2018 (p-value < 0.05). A necessary assumption for statistical t-tests is that variances are approximately equal, with the ratio of variances produced using the var.test function at around 0.5. 
   It is important to note that this was not the case for all three rivers studied. Yadkin River was especially low (0.07) and French Broad River was 0.36. The ratio for Mills River was appropriate (0.44). Another necessary assumption is that the data are normally distributed, which was again not the case for all three rivers in both years. All samples were notably right-skewed; however, this makes sense given that gage heights are expected to remain around the same level. The high values that are skewing the distribution of the data could reflect the increases in gage height due to hurricanes (especially in 2018) or other unusual events (for example, human regulation of river flow).   
   With these results, we reject the null hypothesis and conclude that the average gage heights for 2001 and 2018 are different and that this difference is statistically significant for all three rivers.    
