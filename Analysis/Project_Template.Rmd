@@ -5,7 +5,7 @@ output:
     fig_caption: yes
     number_sections: yes
 geometry: margin=2.54cm
-title: ""
+title: "Title"
 subtitle: "Web address for GitHub repository"
 title: "Assessing water level changes from hurricanes from 2000 - 2020"
 subtitle: "https://github.com/Autumn41/Dunn-Artusi-Zarate_ENV872_Project.git"
