@@ -85,8 +85,9 @@ FrenchBroad <- renameNWISColumns(FrenchBroad);
 saveRDS(FrenchBroad, file ="../Data/Raw/FrenchBroad.rds")
 
 # Save the data as a csv
-#write.csv(df,"C:\\Users\\Ron\\Desktop\\MyData.csv", row.names = FALSE)
-
+write.csv(Yadkin,"../Data/Raw/Yadkin.csv", row.names = FALSE)
+write.csv(Mills,"../Data/Raw/Mills.csv", row.names = FALSE)
+write.csv(FrenchBroad ,"../Data/Raw/FrenchBroad.csv", row.names = FALSE)
 
 ```
 
