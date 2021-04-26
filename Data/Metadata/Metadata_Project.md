@@ -9,7 +9,7 @@ Data were collected from the U.S. Geological Survey's Water Data website. More i
 
 The steps to collect the data were the following: 
 * From the homepage (https://waterdata.usgs.gov/nwis) select Surface Water
-* Historical Observations (select the box)
+* Daily Data (select the box)
 * State/Territory (check box) and submit
 * Select North Carolina from the State/Territory options box 
 * Select gage height from Water Level/Flow Parameters (check boxes)
