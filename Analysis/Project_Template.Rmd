@@ -348,9 +348,10 @@ Yadkin_test <- t.test(Yadkin_2001$GH, Yadkin_2018$GH, var.equal = T)
 
 #Graph
 Yadkin_df <- rbind(Yadkin_2001, Yadkin_2018)
-ggplot(Yadkin_df, aes(x = factor(Year), y = GH)) + 
+Yad_plot <- ggplot(Yadkin_df, aes(x = factor(Year), y = GH)) + 
   geom_boxplot() + 
-  labs(x = "Year", y = "Gage Height (ft)", title = "Yadkin 2001 vs. 2018")
+  labs(x = "Year", y = "Gage Height (ft)", title = "Yadkin River") +
+  scale_y_continuous(limits=c(0,10))
 
 
 ## French Broad - T-Test
@@ -359,9 +360,10 @@ FrenchBroad_test <- t.test(FrenchBroad_2001$GH, FrenchBroad_2018$GH, var.equal =
 
 #Graph
 FrenchBroad_df <- rbind(FrenchBroad_2001, FrenchBroad_2018)
-ggplot(FrenchBroad_df, aes(x = factor(Year), y = GH)) + 
+Fre_plot <- ggplot(FrenchBroad_df, aes(x = factor(Year), y = GH)) + 
   geom_boxplot() + 
-  labs(x = "Year", y = "Gage Height (ft)", title = "French Broad 2001 vs. 2018")
+  labs(x = "Year", y = "Gage Height (ft)", title = "French Broad River") +
+  scale_y_continuous(limits=c(0,10))
 
 
 ## Mills - T-Test
@@ -370,9 +372,10 @@ Mills_test <- t.test(Mills_2001$GH, Mills_2018$GH, var.equal = T)
 
 #Graph
 Mills_df <- rbind(Mills_2001, Mills_2018)
-ggplot(Mills_df, aes(x = factor(Year), y = GH)) + 
+Mil_plot <- ggplot(Mills_df, aes(x = factor(Year), y = GH)) + 
   geom_boxplot() + 
-  labs(x = "Year", y = "Gage Height (ft)", title = "Mills 2001 vs. 2018")     
+  labs(x = "Year", y = "Gage Height (ft)", title = "Mills River") +
+  scale_y_continuous(limits=c(0,10))
 ```
 
 ```{r ResultsTable2, echo=FALSE}
@@ -398,25 +401,34 @@ kable(Results_df, col.names = c("River Name", "2001 Avg GH",
   kable_styling()
 ```
 
-
 ## Question 1: Has gage height changed over 2000-2020 for September from hurricanes? 
 
   Yadkin River, Mills River, and French Broad River had a significant (p-value < 0.05) monotonic upward trend. French Broad River had the largest upward trend (0.155) and Yadkin River and Mills River had the smallest upward trend (0.136). With these results, we reject the null hypothesis and conclude that gage Height has changed in September over the last 20 years and that this change is statistically significant for all three rivers.    
 
 ## Question 2: Are gage heights significantly different between 2001 and 2018?
 
-  The mean gage heights for each river was higher in 2018 than in 2001, and these differences were statistically significant. Since the t-statistic for the Yadkin, Mills, and French Broad Rivers (-6.22, -5.37, and -6.72) are negative, this indicates that the 2018 gage heights are greater than the 2001 heights. The Yadkin River gage was 0.49 feet higher in 2018 (p-value < 0.05). The Mills River gage was 0.28 feet higher in 2018 (p-value < 0.05). The French Broad River gage was 1.28 feet higher in 2018 (p-value < 0.05). With these results, we reject the null hypothesis and conclude that the average gage heights for 2001 and 2018 are different and that this difference is statistically significant for all three rivers.    
+  The mean gage heights for each river was higher in 2018 than in 2001, and these differences were statistically significant (distribution of gage heights shown in Figure 6). Since the t-statistic for the Yadkin, Mills, and French Broad Rivers (-6.22, -5.37, and -6.72) are negative, this indicates that the 2018 gage heights are greater than the 2001 heights. The Yadkin River gage was 0.49 feet higher in 2018 (p-value < 0.05). The Mills River gage was 0.28 feet higher in 2018 (p-value < 0.05). The French Broad River gage was 1.28 feet higher in 2018 (p-value < 0.05). With these results, we reject the null hypothesis and conclude that the average gage heights for 2001 and 2018 are different and that this difference is statistically significant for all three rivers.  
+  
+```{r Figure6, echo = FALSE, fig.cap = "Gage height box plots for Yadkin, French Broad, and Mills River in September 2001 versus 2018."}
+plot_grid(Yad_plot, Fre_plot, Mil_plot, nrow = 1, align = 'b')
+```
 
 \newpage
 
 # Summary and Conclusions
 
   Water level has been increasing for the month of September over the last 20 years, based on the significant upward trend from the time series analysis. Though storms appeared to have decreased in frequency (there were 48 storms from 2000 - 2010, but only 18 storms from 2011 – 2020) it is evident that the severity of the storms has increased, based on both deaths and increasing water levels. Further research should be done to quantify how much additional water is deposited per storm and what updates to infrastructure should be done to account for this additional water.
-   To evaluate increase in hurricane intensity due to climate change, we compared gage heights between 2001, a year with no September hurricanes impacting North Carolina, and 2018, a year with the major Hurricane Florence. The results of our t-test showed that there was a significant difference in gage height, indicating that hurricane intensity and flood potential increased. While it is possible that other factors contributed to this increase in gage height, our conclusions are supported by existing research studies that link climate change to increases in hurricane intensity (Emanuel, 1987).
+  
+   To evaluate increases in hurricane intensity due to climate change, we compared gage heights between 2001, a year with no September hurricanes impacting North Carolina, and 2018, a year with the major Hurricane Florence. The results of our t-test showed that there was a significant difference in gage height, indicating that hurricane intensity and flood potential increased. While it is possible that other factors contributed to this increase in gage height, our conclusions are supported by existing research studies that link climate change to increases in hurricane intensity (Emanuel, 1987). However, most of the data used for our t-tests failed to satisfy the assumptions of equal variances and normality. Future, more in-depth studies should transform and normalize the data, or use a different statistical test that accounts for these failed assumptions.
 
 \newpage
 
 # References
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{8pt}
+\noindent
+
 Ameli, A. A., & Creed, I. F. (2019). Does Wetland Location Matter When Managing Wetlands for Watershed-Scale Flood and Drought Resilience? Journal of the American Water Resources Association, 55(3), 529–542. https://doi.org/10.1111/1752-1688.12737
 
 Carle, M. V. (2011). Estimating wetland losses and gains in coastal north carolina: 1994-2001. Wetlands, 31(6), 1275–1285. https://doi.org/10.1007/s13157-011-0242-z
