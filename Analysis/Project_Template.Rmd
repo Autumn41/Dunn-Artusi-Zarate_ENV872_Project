@@ -5,8 +5,8 @@ output:
     fig_caption: yes
     number_sections: yes
 geometry: margin=2.54cm
-subtitle: "Web address for GitHub repository: https://github.com/Autumn41/Dunn-Artusi-Zarate_ENV872_Project.git"
-title: "Assessing water level changes from hurricanes from 2000 to 2020"
+title: "Assessing water level changes from hurricanes from 2000 - 2020"
+subtitle: "https://github.com/Autumn41/Dunn-Artusi-Zarate_ENV872_Project.git"
 author: "Camila Zarate Ospina, Savannah Artusi, and Autumn Dunn"
 fontsize: 12pt
 mainfont: Times New Roman
@@ -128,7 +128,7 @@ saveRDS(FrenchBroad_sept, file ="../Data/Processed/FrenchBroad_sept.rds")
 
 # Rationale and Research Questions
 
-  From 2000 to 2020, North Carolina was hit with 64 hurricanes and 26 of those hurricanes occurred in September. With climate change, hurricanes are expected to occur more frequently and at higher intensity (Elsner, 2006). Higher intensity storms will likely cause flooding of cities and urban areas which many infrastructures are not designed to accommodate (James et al., 2020; Marsooli & Lin, 2020). Additionally, much of North Carolina Piedmont wetlands have been drained and many streams are degraded due to urban disturbances (Carle, 2011; Violin et al., 2011). Wetlands and streams are natural systems that store flood water, and without them, many areas that have not flooded in the past will be at risk (Ameli & Creed, 2019). Investing in pre-disaster hazard mitigation has been shown to be economically beneficial and save lives (Villa, 2020). In order to update infrastructure, expected water input and time period of elevated water levels are needed. Using stream gage height, we selected Yadkin River, Mills River, and French Broad River, because of their location along the path of Hurricane Florence, which hit North Carolina in September of 2018. We focused on two questions: has gage height changed over 2000-2020 for September from hurricanes, and, are gage heights significantly different between 2001 and 2018?
+  From 2000 to 2020, North Carolina was hit with 64 hurricanes and 26 of those hurricanes occurred in September. With climate change, hurricanes are expected to occur more frequently and at higher intensity (Elsner, 2006). Higher intensity storms will likely cause flooding of cities and urban areas which many infrastructures are not designed to accommodate (James et al., 2020; Marsooli & Lin, 2020). Additionally, much of North Carolina Piedmont wetlands have been drained and many streams are degraded due to urban disturbances (Carle, 2011; Violin et al., 2011). Wetlands and streams are natural systems that store flood water, and without them, many areas that have not flooded in the past will be at risk (Ameli & Creed, 2019). Based on National Climatic Data Center Event Report for Hurricanes, in 2018, 46 people died due to hurricane Florence and Michael, the only 2 hurricanes to hit that year and in 2016, 28 people died due to hurricane Matthew. From 2000 - 2012, 41 people in total died due to hurricanes. Death from hurricanes are usually linked to flooding, which can cause expose individuals to sewage water, damage infrastructure making roads and homes dangerous, and potentially drown victims (Choudhary et al., 2012). Investing in pre-disaster hazard mitigation has been shown to be economically beneficial and save lives (Villa, 2020). In order to update infrastructure, expected water input and time period of elevated water levels are needed. Using stream gage height, we selected Yadkin River, Mills River, and French Broad River, because of their location along the path of Hurricane Florence, which hit North Carolina in September of 2018. We focused on two questions: has gage height changed over 2000-2020 for September from hurricanes, and, are gage heights significantly different between 2001 and 2018?
   
 ![](../Literature/HurricaneFlorencePathNC.png)
 
@@ -151,11 +151,9 @@ French Broad River | Fletcher         | 03447687
 \newpage
 
 # Exploratory Analysis 
-
-Explain what the readers will see in the graphs - Autumn.
-
 Savannah historgrams. 
 
+The Yadkin River gage heigh for September for every year from 2000 - 2020. This shows the gage height variation, and higher values and more spread in the data indicate flooding, likely from hurricanes. Years that had the most spread and highest values were 2004 and 2018.
 ```{r Plot1, echo = FALSE}
 #Plot 1 - Yadkin Gage Height as points on individual plots for September
 ggplot(Yadkin_sept, aes(y=GH, x=Date)) +
@@ -165,7 +163,7 @@ ggplot(Yadkin_sept, aes(y=GH, x=Date)) +
   mytheme +
   facet_wrap(vars(Year)) 
 ```
-
+The Mills River gage heigh for September for every year from 2000 - 2020. This shows the gage height variation, and higher values and more spread in the data indicate flooding, likely from hurricanes. Years that had the most spread and highest values were 2004 and 2009.
 ```{r Plot2, echo = FALSE}
 #Plot 2 - Mills Gage Height as points on individual plots for September
 ggplot(Mills_sept, aes(y=GH, x=Date)) +
@@ -176,6 +174,7 @@ ggplot(Mills_sept, aes(y=GH, x=Date)) +
   facet_wrap(vars(Year)) 
 ```
 
+The French Broad River gage heigh for September for every year from 2000 - 2020. This shows the gage height variation, and higher values and more spread in the data indicate flooding, likely from hurricanes. Years that had the most spread and highest values were 2004, 2009, and 2020.
 ```{r Plot3, echo = FALSE}
 #Plot 3 - FrenchBroad Gage Height as points on individual plots for September
 ggplot(FrenchBroad_sept, aes(y=GH, x=Date)) +
@@ -191,11 +190,11 @@ ggplot(FrenchBroad_sept, aes(y=GH, x=Date)) +
 
 # Analysis
 
-Time Series of four rivers from 2000 - 2020
 
-Add paragraph explaining/intoduing ts - Autumn. 
-
+To answer question 1, we performed a time series with the objective to identify if gage heights have changed in September over the last 20 years. The results from the test can be seen in Table 2. 
 ```{r TimeSeries, include=FALSE}
+#H0: Gage Height has not changed in September over the last 20 years
+#Ha: Gage Height has changed in September over the last 20 years
 
 ## Yadkin ##
 
@@ -258,11 +257,24 @@ Month_FrenchBroad_trend <- Kendall::SeasonalMannKendall(FrenchBroad.daily.ts)
 
 # Inspect results
 summary(Month_FrenchBroad_trend)
+```
 
+```{r ResultsTable1, echo=FALSE}
+#Create Table of Results
+Results_ts <- data.frame("River_Name" = c('Yadkin', 'Mills', 
+                                          'French Broad'),
+                 "Tau" = c(Month_Yadkin_trend$tau, Month_Mills_trend$tau,
+                                       Month_FrenchBroad_trend$tau),
+                 "P-Value" = c("< 2.22e-16", "< 2.22e-16",
+                               "< 2.22e-16"))
+
+kable(Results_ts, col.names = c("River Name", "Tau Score", "P-Value"), 
+                  caption = "Results from the Mann-Kendall test", digits = c(0, 5, 8)) %>% 
+  kable_styling()
 ```
 
 
-To answer question 2, we performed a t-test with the objective to identify if the gage heights between 2001 (out baseline year) and 2018 (the year when Hurricane Florence impacted North Carolina) were statistically different. The results from the test can be seen in Table 2. 
+To answer question 2, we performed a t-test with the objective to identify if the gage heights between 2001 (out baseline year) and 2018 (the year when Hurricane Florence impacted North Carolina) were statistically different. The results from the test can be seen in Table 3. 
 ```{r T-Test, include=FALSE}
 #H0: Gage Height is the same in September for both years
 #Ha: Gage Height is not the same in September for both years
@@ -329,7 +341,7 @@ ggplot(Mills_df, aes(x = factor(Year), y = GH)) +
   labs(x = "Year", y = "Gage Height (ft)", title = "Mills 2001 vs. 2018")     
 ```
 
-```{r ResultsTable, echo=FALSE}
+```{r ResultsTable2, echo=FALSE}
 #Create Table of Results
 Results_df <- data.frame("River_Name" = c('Yadkin', 'Mills', 
                                           'French Broad'),
@@ -350,17 +362,15 @@ kable(Results_df, col.names = c("River Name", "2001 Avg GH",
                   caption = "Results from the T-test", digits = c(0, 2, 2, 2, 2, 8)) %>% 
   column_spec(1:5, border_left = T, border_right = T) %>%
   kable_styling()
-
 ```
 
 
 ## Question 1: Has gage height changed over 2000-2020 for September from hurricanes? 
 
-Add: state the null hypothesis - Autumn. 
-
-Yadkin River, Mills River, and French Broad River had a significant (p-value < 0.05) monotonic upward trend. French Broad River had the largest upward trend ( ) and Yadkin River and Mills River had the smallest upward trend (0.0218).
+  Yadkin River, Mills River, and French Broad River had a significant (p-value < 0.05) monotonic upward trend. French Broad River had the largest upward trend (0.155) and Yadkin River and Mills River had the smallest upward trend (0.136). With these results, we reject the null hypothesis and conclude that gage Height has changed in September over the last 20 years and that this change is statistically significant for all three rivers.    
 
 ## Question 2: Are gage heights significantly different between 2001 and 2018?
+
   The mean gage heights for each river was higher in 2018 than in 2001, and these differences were statistically significant. Since the t-statistic for the Yadkin, Mills, and French Broad Rivers (-6.22, -5.37, and -6.72) are negative, this indicates that the 2018 gage heights are greater than the 2001 heights. The Yadkin River gage was 0.49 feet higher in 2018 (p-value < 0.05). The Mills River gage was 0.28 feet higher in 2018 (p-value < 0.05). The French Broad River gage was 1.28 feet higher in 2018 (p-value < 0.05). A necessary assumption for statistical t-tests is that variances are approximately equal, with the ratio of variances produced using the var.test function at around 0.5. 
   It is important to note that this was not the case for all three rivers studied. Yadkin River was especially low (0.07) and French Broad River was 0.36. The ratio for Mills River was appropriate (0.44). Another necessary assumption is that the data are normally distributed, which was again not the case for all three rivers in both years. All samples were notably right-skewed; however, this makes sense given that gage heights are expected to remain around the same level. The high values that are skewing the distribution of the data could reflect the increases in gage height due to hurricanes (especially in 2018) or other unusual events (for example, human regulation of river flow).   
   With these results, we reject the null hypothesis and conclude that the average gage heights for 2001 and 2018 are different and that this difference is statistically significant for all three rivers.    
@@ -369,7 +379,7 @@ Yadkin River, Mills River, and French Broad River had a significant (p-value < 0
 
 # Summary and Conclusions
 
-  Water level has been increasing for the month of September over the last 20 years, based on the significant upward trend from the time series analysis. Based on National Climatic Data Center Event Report for Hurricanes, in 2018, 46 people died due to hurricane Florence and Michael, the only 2 hurricanes to hit that year and in 2016, 28 people died due to hurricane Matthew. From 2000 - 2012, 41 people in total died due to hurricanes. Death from hurricanes are usually linked to flooding, which can cause expose individuals to sewage water, damage infrastructure making roads and homes dangerous, and potentially drown victims (Choudhary et al., 2012). Though storms appeared to have decreased in frequency (there were 48 storms from 2000 - 2010, but only 18 storms from 2011 – 2020) it is evident that the severity of the storms has increased, based on both deaths and increasing water levels. Further research should be done to quantify how much additional water is deposited per storm and what updates to infrastructure should be done to account for this additional water.
+  Water level has been increasing for the month of September over the last 20 years, based on the significant upward trend from the time series analysis. Though storms appeared to have decreased in frequency (there were 48 storms from 2000 - 2010, but only 18 storms from 2011 – 2020) it is evident that the severity of the storms has increased, based on both deaths and increasing water levels. Further research should be done to quantify how much additional water is deposited per storm and what updates to infrastructure should be done to account for this additional water.
    To evaluate increase in hurricane intensity due to climate change, we compared gage heights between 2001, a year with no September hurricanes impacting North Carolina, and 2018, a year with the major Hurricane Florence. The results of our t-test showed that there was a significant difference in gage height, indicating that hurricane intensity and flood potential increased. While it is possible that other factors contributed to this increase in gage height, our conclusions are supported by existing research studies that link climate change to increases in hurricane intensity (Emanuel, 1987).
 
 \newpage
